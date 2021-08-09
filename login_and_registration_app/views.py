@@ -8,12 +8,14 @@ def index(request):
     return render(request,'index.html')
 
 def success(request):
-    if request.method=="GET":
+    try:
+        User.objects.filter(id=request.session['userid'])
+    except:
         return redirect("/")
-    one_user = User.objects.get(id=request.session['user_id'])
+    one_user = User.objects.get(id=request.session['userid'])
     context = {
         'this_user': one_user
-    }
+        }
     return render(request,'success.html', context)
 
 def register(request):
@@ -32,7 +34,7 @@ def register(request):
             print(pw_hash)
             new_user = User.objects.create(first_name=first_name, last_name=last_name, email=email, password=pw_hash)
             new_user.save()
-            request.session['user_id'] = new_user.id
+            request.session['userid'] = new_user.id
             return redirect("/success")
 
 
@@ -41,7 +43,7 @@ def login(request):
     if user:
         logged_user = user[0]
         if bcrypt.checkpw(request.POST['password'].encode(), logged_user.password.encode()):
-            request.session['user_id'] = logged_user.id
+            request.session['userid'] = logged_user.id
             return redirect('/success')
     return redirect("/")
 
