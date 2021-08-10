@@ -28,6 +28,9 @@
                     Email <input name="email" type="text">
                 </p>
                 <p>
+                    Birthday: <input name="birth_date" type="date">
+                </p>
+                <p>
                     Password: <input name="password" type="password">
                 </p>
                 <p>
@@ -37,13 +40,6 @@
             </form>
         </div>
         <div id="login">
-            {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endfor %}
-            </ul>
-            {% endif %}
             <h1> Login</h1>
             <form action="/login" method="post">
                 {% csrf_token %}
